@@ -1,5 +1,7 @@
 'use strict'
 
+require('dotenv').config();
+
 const fs = require('fs');
 
 const { parse } = require('csv-parse');
@@ -78,20 +80,29 @@ async function run () {
   }
 
   // Build the ES client object
+  console.error('Connecting to ElasticSearch');
   const client = new Client({
     node: 'https://localhost:9200',
     auth: {
       username: 'elastic',
-      password: 'yEvy9GU2KRcD^x*q'
+      password: process.env.ELASTIC_PASSWORD
     },
     tls: {
       ca: fs.readFileSync('./ca.crt'),
       rejectUnauthorized: false
     }
-  })
+  });
+
+  // Delete any prexisting index
+  console.error('Deleting old index');
+  await client.indices.delete({
+    index: 'boesearch',
+    ignore_unavailable: true
+  });
 
 
   // Create a new index with the appropriate mapping
+  console.error('Creating index');
   await client.indices.create({
     index: 'boesearch',
     mappings: {
@@ -99,6 +110,7 @@ async function run () {
     }
   });
 
+  console.error('Parsing records');
   const parser = fs.createReadStream('./COUNTY_COMMITTEE.csv').pipe(parse({
     on_record: (record) => {
       const newRecord = {};
@@ -130,7 +142,7 @@ async function run () {
     if (records.length >= 100) {
       await client.bulk({ operations: records });
       records = [];
-      console.log(i);
+      console.error(i);
     }
   }
 
@@ -140,6 +152,7 @@ async function run () {
   }
 
   // Refresh the index
+  console.error('Refreshing index');
   await client.indices.refresh({ index: 'boesearch' });
 }
 
