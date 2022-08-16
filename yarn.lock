@@ -6140,6 +6140,11 @@ loader-utils@^3.2.0:
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-3.2.0.tgz#bcecc51a7898bee7473d4bc6b845b23af8304d4f"
   integrity sha512-HVl9ZqccQihZ7JM85dco1MvO9G+ONvxoGa9rkhzFsneGLKSUg1gJf9bWzhRhcvm2qChhWpebQhP44qxjKIUCaQ==
 
+localized-address-format@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/localized-address-format/-/localized-address-format-1.2.1.tgz#f0024ffdf9fac761b8abacee569083ff7550de1b"
+  integrity sha512-+LLrfqWarWKMNcAuc3jsCb4MrPnG1EDOs0Cig2OljHXdTOIfXfpIN0/Y0m9PMRWqibi4KnFZvC/Y1VjPOK1fCA==
+
 locate-path@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-3.0.0.tgz#dbec3b3ab759758071b58fe59fc41871af21400e"

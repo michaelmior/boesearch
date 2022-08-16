@@ -1,4 +1,5 @@
 import { ReactiveBase, DataSearch, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
+import { formatAddress } from "localized-address-format";
 import './App.css';
 
 function App() {
@@ -49,9 +50,14 @@ function App() {
                     </ResultList.Title>
                     <ResultList.Description>
                       {(new Date(item.SCHED_DATE)).toLocaleDateString('en-us')}<br/>
-                      {item.FLNG_ENT_ADD1}<br/>
-                        {item.FLNG_ENT_CITY}, {item.FLNG_ENT_STATE} {item.FLNG_ENT_ZIP}<br/>
-                      {item.FLNG_ENT_COUNTRY}
+                      {[item.FLNG_ENT_FIRST_NAME, item.FLNG_ENT_MIDDLE_NAME, item.FLNG_ENT_LAST_NAME].filter(part => part !== undefined).join(' ').trim()}<br/>
+                      {formatAddress({
+                        addressLines: [item.FLNG_ENT_ADD1],
+                        locality: item.FLNG_ENT_CITY,
+                        administrativeArea: item.FLNG_ENT_STATE,
+                        postalCode: item.FLNG_ENT_ZIP,
+                        postalCountry: item.FLNG_ENT_COUNTRY === 'United States' ? 'US': undefined
+                      }).filter(line => line.indexOf('undefined') === -1).map(line => <>{line}<br/></>)}
                     </ResultList.Description>
                   </ResultList.Content>
                 </ResultList>
