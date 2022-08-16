@@ -1,5 +1,6 @@
 import { ReactiveBase, DataSearch, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
 import { formatAddress } from "localized-address-format";
+import { FaCalendar, FaMap } from "react-icons/fa";
 import './App.css';
 
 function App() {
@@ -42,26 +43,33 @@ function App() {
           }}
           render={({data}) => (
             <ReactiveList.ResultListWrapper>
-              {data.map((item) =>
-                <ResultList key={item._id}>
+              {data.map((item) => {
+                const address = formatAddress({
+                  addressLines: [item.FLNG_ENT_ADD1],
+                  locality: item.FLNG_ENT_CITY,
+                  administrativeArea: item.FLNG_ENT_STATE,
+                  postalCode: item.FLNG_ENT_ZIP,
+                  postalCountry: item.FLNG_ENT_COUNTRY === 'United States' ? 'US': undefined
+                });
+                const addressBlock = (address[0] !== "undefined" && address.join('').trim().length > 0) ? <><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.join(' '))}`} target="_blank" rel="noreferrer">
+                      <FaMap style={{float: 'left', marginRight: '1em', color: '#424242'}}/></a><div style={{float: 'left'}}>
+                        {address.filter(line => line.indexOf('undefined') === -1).map(line => <>{line}<br/></>)}</div></> : <></>;
+                return (<ResultList key={item._id}>
                   <ResultList.Content>
                     <ResultList.Title>
                       ${item.ORG_AMT} from {item.FLNG_ENT_FIRST_NAME} {item.FLNG_ENT_LAST_NAME} to {item.CAND_COMM_NAME} ({item.ELECTION_YEAR})
                     </ResultList.Title>
                     <ResultList.Description>
-                      {(new Date(item.SCHED_DATE)).toLocaleDateString('en-us')}<br/>
-                      {[item.FLNG_ENT_FIRST_NAME, item.FLNG_ENT_MIDDLE_NAME, item.FLNG_ENT_LAST_NAME].filter(part => part !== undefined).join(' ').trim()}<br/>
-                      {formatAddress({
-                        addressLines: [item.FLNG_ENT_ADD1],
-                        locality: item.FLNG_ENT_CITY,
-                        administrativeArea: item.FLNG_ENT_STATE,
-                        postalCode: item.FLNG_ENT_ZIP,
-                        postalCountry: item.FLNG_ENT_COUNTRY === 'United States' ? 'US': undefined
-                      }).filter(line => line.indexOf('undefined') === -1).map(line => <>{line}<br/></>)}
+                      <div style={{paddingBottom: '1em'}}>
+                        <FaCalendar style={{float: 'left', marginRight: '1em'}}/>
+                        {(new Date(item.SCHED_DATE)).toLocaleDateString('en-us')}
+                      </div>
+                      <div style={{marginLeft: '2em'}}>{[item.FLNG_ENT_FIRST_NAME, item.FLNG_ENT_MIDDLE_NAME, item.FLNG_ENT_LAST_NAME].filter(part => part !== undefined).join(' ').trim()}</div>
+                      {addressBlock}
                     </ResultList.Description>
                   </ResultList.Content>
-                </ResultList>
-              )}
+                </ResultList>);
+              })}
             </ReactiveList.ResultListWrapper>
           )}
         />
