@@ -78,6 +78,11 @@ services:
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
+      - http.cors.enabled=true
+      - http.cors.allow-origin="*"
+      - http.cors.allow-methods=OPTIONS,HEAD,GET,POST,PUT,DELETE
+      - http.cors.allow-headers=X-Requested-With,Authorization,Content-Type,Content-Length
+      - http.cors.allow-credentials=true
       - "ES_JAVA_OPTS=-Xms750m -Xmx750m"
     ulimits:
       memlock:
