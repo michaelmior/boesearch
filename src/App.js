@@ -1,4 +1,6 @@
+import React from 'react';
 import { ReactiveBase, DataSearch, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
+import { LightDarkToggle } from 'react-light-dark-toggle';
 import { formatAddress } from "localized-address-format";
 import { FaCalendar, FaMap, FaRegStickyNote } from "react-icons/fa";
 import useDarkMode from 'use-dark-mode';
@@ -22,8 +24,8 @@ function getSearchTerm(item) {
 }
 
 function App() {
-  const darkMode = useDarkMode(false);
-  const theme = darkMode ? 'dark': 'light';
+  const darkMode = useDarkMode();
+  const theme = darkMode.value ? 'dark': 'light';
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -39,7 +41,10 @@ function App() {
     >
       <div className="App">
         <header>
-          <h1>NY BOE Contributor Search</h1>
+          <h1 style={{float: 'left' }}>NY BOE Contributor Search</h1>
+          <div style={{ paddingTop: '1.5em', position: 'absolute', right: '2em', zIndex: 999 }}>
+            <LightDarkToggle onToggle={darkMode.toggle} isLight={!darkMode.value} size='2em' />
+          </div>
         </header>
         <DataSearch
           componentId="searchBox"
