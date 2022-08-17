@@ -1,6 +1,6 @@
 import { ReactiveBase, DataSearch, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
 import { formatAddress } from "localized-address-format";
-import { FaCalendar, FaMap } from "react-icons/fa";
+import { FaCalendar, FaMap, FaRegStickyNote } from "react-icons/fa";
 import './App.css';
 
 function App() {
@@ -55,6 +55,11 @@ function App() {
                 const addressBlock = (address[0] !== "undefined" && address.join('').trim().length > 0) ? <><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.join(' '))}`} target="_blank" rel="noreferrer">
                       <FaMap style={{float: 'left', marginRight: '1em', color: '#424242'}}/></a><div style={{float: 'left'}}>
                         {address.filter(line => line.indexOf('undefined') === -1).map(line => <>{line}<br/></>)}</div></> : <></>;
+
+                const notes = item.TRANS_EXPLNTN ? <div style={{paddingTop: '1em', paddingBottom: '1em', clear: 'both'}}>
+                  <FaRegStickyNote style={{float: 'left', marginRight: '1em'}}/>
+                    {item.TRANS_EXPLNTN}
+                </div>: <></>;
                 return (<ResultList key={item._id}>
                   <ResultList.Content>
                     <ResultList.Title>
@@ -67,6 +72,7 @@ function App() {
                       </div>
                       <div style={{marginLeft: '2em'}}>{[item.FLNG_ENT_FIRST_NAME, item.FLNG_ENT_MIDDLE_NAME, item.FLNG_ENT_LAST_NAME].filter(part => part !== undefined).join(' ').trim()}</div>
                       {addressBlock}
+                      {notes}
                     </ResultList.Description>
                   </ResultList.Content>
                 </ResultList>);
