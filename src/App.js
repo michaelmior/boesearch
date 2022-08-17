@@ -32,6 +32,7 @@ function App() {
           componentId="results"
           dataField="_score"
           sortOptions={[
+            {label: "Relevance", dataField: "_score", sortBy: "desc"},
             {label: "Amount", dataField: "ORG_AMT", sortBy: "desc"},
             {label: "Donation date", dataField: "SCHED_DATE", sortBy: "desc"},
             {label: "Election year", dataField: "ELECTION_YEAR", sortBy: "desc"},
