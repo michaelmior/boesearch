@@ -24,6 +24,11 @@ function getSearchTerm(item) {
 function App() {
   const darkMode = useDarkMode(false);
   const theme = darkMode ? 'dark': 'light';
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+});
 
   return (
     <ReactiveBase
@@ -85,7 +90,7 @@ function App() {
                 return (<ResultList key={item._id}>
                   <ResultList.Content>
                     <ResultList.Title>
-                      ${item.ORG_AMT} from {item._FLNG_ENT_FULL_NAME} to {item.CAND_COMM_NAME} ({item.ELECTION_YEAR})
+                      {formatter.format(item.ORG_AMT)} from {item._FLNG_ENT_FULL_NAME} to {item.CAND_COMM_NAME} ({item.ELECTION_YEAR})
                     </ResultList.Title>
                     <ResultList.Description>
                       <div style={{paddingBottom: '1em'}}>
