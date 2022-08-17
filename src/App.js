@@ -1,14 +1,19 @@
 import { ReactiveBase, DataSearch, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
 import { formatAddress } from "localized-address-format";
 import { FaCalendar, FaMap, FaRegStickyNote } from "react-icons/fa";
+import useDarkMode from 'use-dark-mode';
 import './App.css';
 
 function App() {
+  const darkMode = useDarkMode(false);
+  const theme = darkMode ? 'dark': 'light';
+
   return (
     <ReactiveBase
       url={process.env.REACT_APP_ES_URL}
       app={process.env.REACT_APP_ES_INDEX}
       credentials={`${process.env.REACT_APP_ES_USER}:${process.env.REACT_APP_ES_PASSWORD}`}
+      themePreset={theme}
     >
       <div className="App">
         <DataSearch
@@ -53,7 +58,7 @@ function App() {
                   postalCountry: item.FLNG_ENT_COUNTRY === 'United States' ? 'US': undefined
                 });
                 const addressBlock = (address[0] !== "undefined" && address.join('').trim().length > 0) ? <><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.join(' '))}`} target="_blank" rel="noreferrer">
-                      <FaMap style={{float: 'left', marginRight: '1em', color: '#424242'}}/></a><div style={{float: 'left'}}>
+                      <FaMap style={{float: 'left', marginRight: '1em'}}/></a><div style={{float: 'left'}}>
                         {address.filter(line => line.indexOf('undefined') === -1).map(line => <>{line}<br/></>)}</div></> : <></>;
 
                 const notes = item.TRANS_EXPLNTN ? <div style={{paddingTop: '1em', paddingBottom: '1em', clear: 'both'}}>
