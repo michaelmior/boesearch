@@ -4,6 +4,23 @@ import { FaCalendar, FaMap, FaRegStickyNote } from "react-icons/fa";
 import useDarkMode from 'use-dark-mode';
 import './App.css';
 
+function getName(item) {
+  return [
+    item.FLNG_ENT_FIRST_NAME,
+    item.FLNG_ENT_MIDDLE_NAME,
+    item.FLNG_ENT_LAST_NAME
+  ].filter(part => part !== undefined).join(' ').trim();
+}
+
+function getSearchTerm(item) {
+  let searchTerm = getName(item);
+  if (item.FLNG_ENT_CITY && item.FLNG_ENT_STATE) {
+    searchTerm += ` ${item.FLNG_ENT_CITY}, ${item.FLNG_ENT_STATE}`;
+  }
+
+  return searchTerm;
+}
+
 function App() {
   const darkMode = useDarkMode(false);
   const theme = darkMode ? 'dark': 'light';
@@ -75,7 +92,7 @@ function App() {
                         <FaCalendar style={{float: 'left', marginRight: '1em'}}/>
                         {(new Date(item.SCHED_DATE)).toLocaleDateString('en-us')}
                       </div>
-                      <div style={{marginLeft: '2em'}}>{[item.FLNG_ENT_FIRST_NAME, item.FLNG_ENT_MIDDLE_NAME, item.FLNG_ENT_LAST_NAME].filter(part => part !== undefined).join(' ').trim()}</div>
+                        <div style={{marginLeft: '2em'}}><a className='name' href={`https://www.google.com/search?q=${encodeURIComponent(getSearchTerm(item))}`} target="_blank" rel="noreferrer">{getName(item)}</a></div>
                       {addressBlock}
                       {notes}
                     </ResultList.Description>

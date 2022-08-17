@@ -9,3 +9,11 @@ body.dark-mode {
 .dark-mode a {
   color: #FFF;
 }
+
+a {
+  text-decoration: none;
+}
+
+a.name:hover {
+  border-bottom: 1px dashed;
+}
