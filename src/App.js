@@ -84,7 +84,7 @@ function App() {
                 });
                 const addressBlock = (address[0] !== "undefined" && address.join('').trim().length > 0) ? <><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.join(' '))}`} target="_blank" rel="noreferrer">
                       <FaMap style={{float: 'left', marginRight: '1em'}}/></a><div style={{float: 'left'}}>
-                        {address.filter(line => line.indexOf('undefined') === -1).map(line => <>{line}<br/></>)}</div></> : <></>;
+                        {address.filter(line => line.indexOf('undefined') === -1).map((line, i) => <React.Fragment key={i}>{line}<br/></React.Fragment>)}</div></> : <></>;
 
                 const notes = item.TRANS_EXPLNTN ? <div style={{paddingTop: '1em', paddingBottom: '1em', clear: 'both'}}>
                   <FaRegStickyNote style={{float: 'left', marginRight: '1em'}}/>
