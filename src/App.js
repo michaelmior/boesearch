@@ -14,7 +14,7 @@ function App() {
         <DataSearch
           componentId="searchBox"
           dataField={[
-            {field: 'FLNG_ENT_LAST_NAME', weight: 1}
+            {field: '_FLNG_ENT_FULL_NAME', weight: 1}
           ]}
           placeholder='Search'
         />
@@ -57,7 +57,7 @@ function App() {
                 return (<ResultList key={item._id}>
                   <ResultList.Content>
                     <ResultList.Title>
-                      ${item.ORG_AMT} from {item.FLNG_ENT_FIRST_NAME} {item.FLNG_ENT_LAST_NAME} to {item.CAND_COMM_NAME} ({item.ELECTION_YEAR})
+                      ${item.ORG_AMT} from {item._FLNG_ENT_FULL_NAME} to {item.CAND_COMM_NAME} ({item.ELECTION_YEAR})
                     </ResultList.Title>
                     <ResultList.Description>
                       <div style={{paddingBottom: '1em'}}>

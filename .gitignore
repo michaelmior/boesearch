@@ -70,3 +70,5 @@ node_modules/
 
 # Data files
 *.csv
+*.csv.idx
+*.CSV

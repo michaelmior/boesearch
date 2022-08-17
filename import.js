@@ -8,6 +8,7 @@ const { parse } = require('csv-parse');
 const { Client } = require('@elastic/elasticsearch')
 
 const types = {
+  // Filer information
   FILER_ID: 'long',
   FILER_PREVIOUS_ID: 'keyword',
   CAND_COMM_NAME: 'text',
@@ -53,6 +54,24 @@ const types = {
   OFFICE_DESC: 'text',
   DISTRICT: 'keyword',
   DIST_OFF_CAND_BAL_PROP: 'text',
+
+  // Candidate information
+  COMPLIANCE_TYPE_DESC: 'keyword',
+  FILER_TYPE_DESC: 'keyword',
+  STATUS: 'keyword',
+  COMMITTEE_TYPE_DESC: 'keyword',
+  MUNICIPALITY_DESC: 'text',
+  TREASURER_FIRST_NAME: 'text',
+  TREASURER_MIDDLE_NAME: 'text',
+  TREASURER_LAST_NAME: 'text',
+  ADDRESS: 'text',
+  CITY: 'text',
+  STATE: 'keyword',
+  ZIPCODE: 'keyword',
+
+  // Computed fields
+  _FLNG_ENT_FULL_NAME: 'text',
+  _TREASURER_FULL_NAME: 'text',
 }
 
 const converters = {
@@ -70,6 +89,12 @@ const converters = {
       return undefined;
     }
   }
+}
+
+function combineParts(parts) {
+  return parts.filter(part => part !== undefined && part.trim().length > 0)
+              .join(' ')
+              .trim();
 }
 
 async function run () {
@@ -111,7 +136,7 @@ async function run () {
   });
 
   console.error('Parsing records');
-  const parser = fs.createReadStream('./COUNTY_COMMITTEE.csv').pipe(parse({
+  const parser = fs.createReadStream('./COUNTY_COMMITTEE_JOINED.csv').pipe(parse({
     on_record: (record) => {
       const newRecord = {};
       for (const key of Object.keys(record)) {
@@ -135,6 +160,34 @@ async function run () {
   for await (const record of parser) {
     // Add the necessary elements for bulk update
     records.push({index: {_index: 'boesearch'}})
+
+    // Index the full treasurer name
+    const treasurerName = combineParts([
+      record['TREASURER_FIRST_NAME'],
+      record['TREASURER_MIDDLE_NAME'],
+      record['TREASURER_LAST_NAME']
+    ])
+    if (treasurerName) {
+      record['_TREASURER_FULL_NAME'] = treasurerName;
+    }
+
+    // Get the full name of the filing entity if a person
+    let fullName = combineParts([
+      record['FLNG_ENT_FIRST_NAME'],
+      record['FLNG_ENT_MIDDLE_NAME'],
+      record['FLNG_ENT_LAST_NAME']
+    ]);
+
+    // Default to the organization name
+    if (!fullName) {
+      fullName = record['FLNG_ENT_NAME'];
+    } else if (record['FLNG_ENT_NAME'] && record['FLNG_ENT_NAME'] !== fullName) {
+      // We have both a person and an organization which are different
+      fullName = `${record['FLNG_ENT_NAME']} (${fullName})`;
+    }
+
+    record['_FLNG_ENT_FULL_NAME'] = fullName;
+
     records.push(record);
     i += 1;
 
