@@ -38,6 +38,9 @@ function App() {
       themePreset={theme}
     >
       <div className="App">
+        <header>
+          <h1>NY BOE Contributor Search</h1>
+        </header>
         <DataSearch
           componentId="searchBox"
           dataField={[
