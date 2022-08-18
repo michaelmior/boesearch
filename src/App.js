@@ -4,33 +4,13 @@ import { LightDarkToggle } from 'react-light-dark-toggle';
 import { formatAddress } from "localized-address-format";
 import { FaCalendar, FaMap, FaRegStickyNote } from "react-icons/fa";
 import useDarkMode from 'use-dark-mode';
+
+import { getName, getSearchURL } from './util';
 import './App.css';
-
-function getName(item) {
-  return [
-    item.FLNG_ENT_FIRST_NAME,
-    item.FLNG_ENT_MIDDLE_NAME,
-    item.FLNG_ENT_LAST_NAME
-  ].filter(part => part !== undefined).join(' ').trim();
-}
-
-function getSearchTerm(item) {
-  let searchTerm = getName(item);
-  if (item.FLNG_ENT_CITY && item.FLNG_ENT_STATE) {
-    searchTerm += ` ${item.FLNG_ENT_CITY}, ${item.FLNG_ENT_STATE}`;
-  }
-
-  return searchTerm;
-}
 
 function App() {
   const darkMode = useDarkMode();
   const theme = darkMode.value ? 'dark': 'light';
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2
-});
 
   return (
     <ReactiveBase
@@ -41,11 +21,16 @@ function App() {
     >
       <div className="App">
         <header>
-          <h1 style={{float: 'left' }}>NY BOE Contributor Search</h1>
-          <div style={{ paddingTop: '1.5em', position: 'absolute', right: '2em', zIndex: 999 }}>
-            <LightDarkToggle onToggle={darkMode.toggle} isLight={!darkMode.value} size='2em' />
+          <h1>NY BOE Contributor Search</h1>
+
+          <div style={{ paddingTop: '1.5em', position: 'absolute', top: 0, right: '2em', zIndex: 999 }}>
+            <LightDarkToggle
+              onToggle={darkMode.toggle}
+              isLight={!darkMode.value}
+              size='2em' />
           </div>
         </header>
+
         <DataSearch
           componentId="searchBox"
           dataField={[
@@ -88,14 +73,32 @@ function App() {
                   postalCode: item.FLNG_ENT_ZIP,
                   postalCountry: item.FLNG_ENT_COUNTRY === 'United States' ? 'US': undefined
                 });
-                const addressBlock = (address[0] !== "undefined" && address.join('').trim().length > 0) ? <><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.join(' '))}`} target="_blank" rel="noreferrer">
-                      <FaMap style={{float: 'left', marginRight: '1em'}}/></a><div style={{float: 'left'}}>
-                        {address.filter(line => line.indexOf('undefined') === -1).map((line, i) => <React.Fragment key={i}>{line}<br/></React.Fragment>)}</div></> : <></>;
+                const addressBlock = (address[0] !== "undefined" && address.join('').trim().length > 0) ?
+                  <React.Fragment>
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.join(' '))}`} target="_blank" rel="noreferrer">
+                      <FaMap style={{float: 'left', marginRight: '1em'}}/>
+                    </a>
+                    <div style={{float: 'left'}}>
+                      {address.filter(line => line.indexOf('undefined') === -1)
+                              .map((line, i) =>
+                                <React.Fragment key={i}>
+                                  {line}<br/>
+                                </React.Fragment>)}
+                    </div>
+                  </React.Fragment> : <></>;
 
-                const notes = item.TRANS_EXPLNTN ? <div style={{paddingTop: '1em', paddingBottom: '1em', clear: 'both'}}>
-                  <FaRegStickyNote style={{float: 'left', marginRight: '1em'}}/>
+                const notes = item.TRANS_EXPLNTN ?
+                  <div style={{paddingTop: '1em', paddingBottom: '1em', clear: 'both'}}>
+                    <FaRegStickyNote style={{float: 'left', marginRight: '1em'}}/>
                     {item.TRANS_EXPLNTN}
-                </div>: <></>;
+                  </div>: <></>;
+
+                const formatter = new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 2
+                });
+
                 return (<ResultList key={item._id}>
                   <ResultList.Content>
                     <ResultList.Title>
@@ -106,7 +109,13 @@ function App() {
                         <FaCalendar style={{float: 'left', marginRight: '1em'}}/>
                         {(new Date(item.SCHED_DATE)).toLocaleDateString('en-us')}
                       </div>
-                        <div style={{marginLeft: '2em'}}><a className='name' href={`https://www.google.com/search?q=${encodeURIComponent(getSearchTerm(item))}`} target="_blank" rel="noreferrer">{getName(item)}</a></div>
+
+                      <div style={{marginLeft: '2em'}}>
+                        <a className='name' href={getSearchURL(item)} target="_blank" rel="noreferrer">
+                          {getName(item)}
+                        </a>
+                      </div>
+
                       {addressBlock}
                       {notes}
                     </ResultList.Description>
