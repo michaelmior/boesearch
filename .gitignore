@@ -67,6 +67,7 @@ node_modules/
 
 # ElasticSearch certificate
 *.crt
+*.key
 
 # Data files
 *.csv
