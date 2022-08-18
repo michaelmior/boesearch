@@ -52,6 +52,7 @@ function App() {
             {field: '_FLNG_ENT_FULL_NAME', weight: 1}
           ]}
           placeholder='Search'
+          queryFormat="and"
         />
         <br />
         <MultiDropdownList
