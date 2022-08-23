@@ -162,7 +162,7 @@ async function run () {
   });
 
   console.error('Parsing records');
-  const parser = fs.createReadStream('./COUNTY_COMMITTEE_JOINED.csv').pipe(parse({
+  const parser = fs.createReadStream('./STATE_COMMITTEE_JOINED.csv').pipe(parse({
     on_record: (record) => {
       const newRecord = {};
       for (const key of Object.keys(record)) {
@@ -234,4 +234,4 @@ async function run () {
   await client.indices.refresh({ index: process.env.REACT_APP_ES_INDEX });
 }
 
-run().catch(console.log)
+run().catch(console.error);
