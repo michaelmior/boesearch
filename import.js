@@ -189,7 +189,7 @@ async function run () {
     i += 1;
 
     // Add a batch of 100 records and update progress
-    if (records.length >= 100) {
+    if (records.length >= 100 * 2) {
       await client.bulk({ operations: records });
       records = [];
       console.error(i);
