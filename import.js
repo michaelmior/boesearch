@@ -119,7 +119,7 @@ async function run () {
   // Delete any prexisting index
   console.error('Deleting old index');
   await client.indices.delete({
-    index: 'boesearch',
+    index: process.env.REACT_APP_ES_INDEX,
     ignore_unavailable: true
   });
 
@@ -156,7 +156,7 @@ async function run () {
   let records = [];
   for await (const record of parser) {
     // Add the necessary elements for bulk update
-    records.push({index: {_index: 'boesearch'}})
+    records.push({index: {_index: process.env.REACT_APP_ES_INDEX}})
 
     // Index the full treasurer name
     const treasurerName = combineParts([
@@ -203,7 +203,7 @@ async function run () {
 
   // Refresh the index
   console.error('Refreshing index');
-  await client.indices.refresh({ index: 'boesearch' });
+  await client.indices.refresh({ index: process.env.REACT_APP_ES_INDEX });
 }
 
 run().catch(console.log)
