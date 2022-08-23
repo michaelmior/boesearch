@@ -17,6 +17,7 @@ function App() {
       url={process.env.REACT_APP_ES_URL}
       app={process.env.REACT_APP_ES_INDEX}
       credentials={`${process.env.REACT_APP_ES_USER}:${process.env.REACT_APP_ES_PASSWORD}`}
+      headers={{'Bypass-Tunnel-Reminder': 1}}
       themePreset={theme}
     >
       <div className="App">
