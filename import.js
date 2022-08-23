@@ -35,7 +35,10 @@ const types = {
   FLNG_ENT_FIRST_NAME: 'text',
   FLNG_ENT_MIDDLE_NAME: 'text',
   FLNG_ENT_LAST_NAME: 'text',
-  FLNG_ENT_ADD1: 'text',
+  FLNG_ENT_ADD1: {
+    type: 'text',
+    analyzer: 'address_synonym_analyzer',
+  },
   FLNG_ENT_CITY: 'text',
   FLNG_ENT_STATE: 'text',
   FLNG_ENT_ZIP: 'keyword',
@@ -62,7 +65,10 @@ const types = {
   TREASURER_FIRST_NAME: 'text',
   TREASURER_MIDDLE_NAME: 'text',
   TREASURER_LAST_NAME: 'text',
-  ADDRESS: 'text',
+  ADDRESS: {
+    type: 'text',
+    analyzer: 'address_synonym_analyzer',
+  },
   CITY: 'text',
   STATE: 'keyword',
   ZIPCODE: 'keyword',
@@ -98,8 +104,12 @@ function combineParts(parts) {
 async function run () {
   // Build the type mapping for ES
   const typeMapping = {};
-  for (const [key, type] of Object.entries(types)) {
-    typeMapping[key] = {type: type};
+  for (const [key, config] of Object.entries(types)) {
+    if (typeof config === 'string') {
+      typeMapping[key] = {type: config};
+    } else {
+      typeMapping[key] = config;
+    }
   }
 
   // Build the ES client object
@@ -127,7 +137,25 @@ async function run () {
   // Create a new index with the appropriate mapping
   console.error('Creating index');
   await client.indices.create({
-    index: 'boesearch',
+    index: process.env.REACT_APP_ES_INDEX,
+    settings: {
+      index: {
+        analysis: {
+          analyzer: {
+            address_synonym_analyzer: {
+              tokenizer: 'standard',
+              filter: ['lowercase', 'address_synonym_filter'],
+            }
+          },
+          filter: {
+            address_synonym_filter: {
+              type: 'synonym',
+              synonyms_path: 'analysis/address_synonyms.txt',
+            }
+          }
+        }
+      }
+    },
     mappings: {
       properties: typeMapping
     }

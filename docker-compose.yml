@@ -4,6 +4,7 @@ services:
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
+      - analysis:/usr/share/elasticsearch/config/analysis
       - certs:/usr/share/elasticsearch/config/certs
     user: "0"
     command: >
@@ -34,8 +35,12 @@ services:
           bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
           unzip config/certs/certs.zip -d config/certs;
         fi;
+        echo "Adding synonyms";
+        mkdir config/analysis;
+        curl -o config/analysis/address_synonyms.txt https://gist.githubusercontent.com/jacobwyke/20f7a44434fe612a34fa/raw/2848d5402245931fa7141eea269a9a120901ac4e/gistfile1.txt
         echo "Setting file permissions"
         chown -R root:root config/certs;
+        chown -R root:root config/analysis;
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
         echo "Waiting for Elasticsearch availability";
@@ -56,6 +61,7 @@ services:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
+      - analysis:/usr/share/elasticsearch/config/analysis
       - certs:/usr/share/elasticsearch/config/certs
       - esdata:/usr/share/elasticsearch/data
     ports:
@@ -125,6 +131,8 @@ services:
       retries: 120
 
 volumes:
+  analysis:
+    driver: local
   certs:
     driver: local
   esdata:
