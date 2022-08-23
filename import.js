@@ -149,7 +149,6 @@ async function run () {
       }
       return newRecord;
     },
-    skip_records_with_error: true,
     columns: true
   }));
 
