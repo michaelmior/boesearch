@@ -1,11 +1,15 @@
 require('dotenv').config();
 
 const fs = require('fs');
+const readline = require('readline');
 
+const cliProgress = require('cli-progress');
 const { parse } = require('csv-parse');
 const { Client } = require('@elastic/elasticsearch')
+const { hideBin } = require('yargs/helpers');
+const yargs = require('yargs/yargs');
 
-const types = {
+const TYPE_MAPPINGS = {
   // Filer information
   FILER_ID: 'long',
   FILER_PREVIOUS_ID: 'keyword',
@@ -78,7 +82,7 @@ const types = {
   _TREASURER_FULL_NAME: 'text',
 }
 
-const converters = {
+const CONVERTERS = {
   'long': parseInt,
   'integer': parseInt,
   'float': parseFloat,
@@ -101,42 +105,22 @@ function combineParts(parts) {
               .trim();
 }
 
-async function run () {
+async function createIndex(client) {
   // Build the type mapping for ES
   const typeMapping = {};
-  for (const [key, config] of Object.entries(types)) {
+  for (const [key, config] of Object.entries(TYPE_MAPPINGS)) {
     if (typeof config === 'string') {
+      // If we only have a string, use that as the type
       typeMapping[key] = {type: config};
     } else {
+      // Otherwise, assume we hve an object for the entire mapping
       typeMapping[key] = config;
     }
   }
 
-  // Build the ES client object
-  console.error('Connecting to ElasticSearch');
-  const client = new Client({
-    node: 'https://localhost:9200',
-    auth: {
-      username: 'elastic',
-      password: process.env.ELASTIC_PASSWORD
-    },
-    tls: {
-      ca: fs.readFileSync('./ca.crt'),
-      rejectUnauthorized: false
-    }
-  });
-
-  // Delete any prexisting index
-  console.error('Deleting old index');
-  await client.indices.delete({
-    index: process.env.REACT_APP_ES_INDEX,
-    ignore_unavailable: true
-  });
-
-
   // Create a new index with the appropriate mapping
   console.error('Creating index');
-  await client.indices.create({
+  return client.indices.create({
     index: process.env.REACT_APP_ES_INDEX,
     settings: {
       index: {
@@ -148,6 +132,7 @@ async function run () {
             }
           },
           filter: {
+            // Add synonyms for address parts such as Road <=> Rd
             address_synonym_filter: {
               type: 'synonym',
               synonyms_path: 'analysis/address_synonyms.txt',
@@ -160,14 +145,80 @@ async function run () {
       properties: typeMapping
     }
   });
+}
+
+async function deleteIndex(client) {
+  console.error('Deleting old index');
+
+  // Delete any prexisting index (if it exists)
+  return client.indices.delete({
+    index: process.env.REACT_APP_ES_INDEX,
+    ignore_unavailable: true
+  });
+}
+
+async function run () {
+  const argv = yargs(hideBin(process.argv))
+    .command('$0 <file>')
+    .option('c', {
+      alias: 'create-index',
+      default: true,
+      type: 'boolean'
+    })
+    .option('d', {
+      alias: 'delete-index',
+      default: false,
+      type: 'boolean'
+    })
+    .argv;
+
+
+  // Count the totial lines in the file
+  const rl = readline.createInterface({
+    input: fs.createReadStream(argv.file),
+  });
+
+  // Start at -1 so we implicitly don't count the header
+  let totalRows = -1;
+  // eslint-disable-next-line
+  for await (const _line of rl) {
+    totalRows += 1;
+  }
+
+  // Build the ES client object
+  console.error('Connecting to ElasticSearch');
+  const client = new Client({
+    // node: process.env.REACT_APP_ES_URL,
+    node: 'https://localhost:9200',
+    auth: {
+      username: 'elastic',
+      password: process.env.ELASTIC_PASSWORD
+    },
+    tls: {
+      ca: fs.readFileSync('./ca.crt'),
+      rejectUnauthorized: false
+    }
+  });
+
+  if (argv.deleteIndex) {
+    await deleteIndex(client);
+  }
+
+  if (argv.createIndex) {
+    await createIndex(client);
+  }
 
   console.error('Parsing records');
-  const parser = fs.createReadStream('./STATE_COMMITTEE_JOINED.csv').pipe(parse({
+  const parser = fs.createReadStream(argv.file).pipe(parse({
     on_record: (record) => {
       const newRecord = {};
       for (const key of Object.keys(record)) {
         // Apply any necessary converters
-        const converter = converters[types[key]];
+        // XXX: A type mapping using an object will not
+        //      pick up the corresponding converter. This
+        //      is not an issue for now since this is only
+        //      used for the text type, which has no conversion.
+        const converter = CONVERTERS[TYPE_MAPPINGS[key]];
         const newValue = converter ? converter(record[key]) : record[key];
 
         // Only include the field if it has a valid value
@@ -179,6 +230,12 @@ async function run () {
     },
     columns: true
   }));
+
+  // Start a progress bar
+  const progressBar = new cliProgress.SingleBar({
+    etaBuffer: 10000,
+  }, cliProgress.Presets.shades_classic);
+  progressBar.start(totalRows, 0);
 
   let i = 0;
   let records = [];
@@ -215,14 +272,17 @@ async function run () {
 
     records.push(record);
     i += 1;
+    progressBar.update(i);
 
     // Add a batch of 100 records and update progress
     if (records.length >= 100 * 2) {
       await client.bulk({ operations: records });
       records = [];
-      console.error(i);
     }
   }
+
+  // Stop the progress bar
+  progressBar.stop();
 
   // Perform one final bulk update if needed
   if (records.length > 0) {
