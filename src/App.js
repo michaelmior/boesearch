@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactiveBase, DataSearch, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
 import { LightDarkToggle } from 'react-light-dark-toggle';
 import { formatAddress } from "localized-address-format";
@@ -11,6 +11,7 @@ import './App.css';
 function App() {
   const darkMode = useDarkMode();
   const theme = darkMode.value ? 'dark': 'light';
+  const [searchField, setSearchField] = useState('_FLNG_ENT_FULL_NAME');
 
   return (
     <ReactiveBase
@@ -32,10 +33,22 @@ function App() {
           </div>
         </header>
 
+        <div style={{marginBottom: '1em'}}>
+          <strong>Search by</strong>
+          <label>
+            <input type="radio" value="_FLNG_ENT_FULL_NAME" checked={searchField === '_FLNG_ENT_FULL_NAME'} onChange={() => setSearchField('_FLNG_ENT_FULL_NAME')}/>
+            <span>Filing entity name</span>
+          </label>
+          <label>
+            <input name="search_candidate" type="radio" value="CAND_COMM_NAME" checked={searchField === 'CAND_COMM_NAME'} onChange={() => setSearchField('CAND_COMM_NAME')}/>
+            <span>Candidate name</span>
+          </label>
+        </div>
+
         <DataSearch
           componentId="searchBox"
           dataField={[
-            {field: '_FLNG_ENT_FULL_NAME', weight: 1}
+            {field: searchField, weight: 1}
           ]}
           placeholder='Search'
           queryFormat="and"

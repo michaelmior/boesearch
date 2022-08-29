@@ -23,3 +23,7 @@ a {
 a.name:hover {
   border-bottom: 1px dashed;
 }
+
+label {
+  padding: 0.5em;
+}
