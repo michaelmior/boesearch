@@ -88,10 +88,16 @@ function App() {
                     </div>
                   </React.Fragment> : <></>;
 
-                const notes = item.TRANS_EXPLNTN ?
+                const notesText = [item.PURPOSE_CODE_DESC, item.TRANS_EXPLNTN]
+                  .map(s => (s || '').trim())
+                  .filter(s => s.length > 0)
+                  .map(s => <p>{s}</p>);
+                const notes = notesText.length > 0 ?
                   <div style={{paddingTop: '1em', paddingBottom: '1em', clear: 'both'}}>
                     <FaRegStickyNote style={{float: 'left', marginRight: '1em'}}/>
-                    {item.TRANS_EXPLNTN}
+                    <div style={{float: 'left'}}>
+                      {notesText}
+                    </div>
                   </div>: <></>;
 
                 const formatter = new Intl.NumberFormat('en-US', {
