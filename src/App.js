@@ -50,7 +50,7 @@ function App() {
             <MultiDropdownList
               componentId="electionTypeFilter"
               dataField="ELECTION_TYPE"
-              title="Filter by Election type"
+              title="Election type"
               aggregationSize={5}
               queryFormat="or"
               react={{and: ["searchBox", "electionYearFilter"]}}
