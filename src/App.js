@@ -148,7 +148,7 @@ function App() {
 
                           <div style={{marginLeft: '2em'}}>
                             <a className='name' href={getSearchURL(item)} target="_blank" rel="noreferrer">
-                              {getName(item)}
+                              {item._FLNG_ENT_FULL_NAME}
                             </a>
                           </div>
 
