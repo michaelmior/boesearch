@@ -69,7 +69,7 @@ function App() {
             />
           </div>
 
-          <div>
+          <div style={{flex: 1}}>
             <DataSearch
               componentId="searchBox"
               dataField={[
