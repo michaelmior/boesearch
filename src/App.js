@@ -135,7 +135,7 @@ function App() {
                       minimumFractionDigits: 2
                     });
 
-                    return (<ResultList key={item._id}>
+                    return (<ResultList key={item._id} className="results">
                       <ResultList.Content>
                         <ResultList.Title>
                           {formatter.format(item.ORG_AMT)} from {item._FLNG_ENT_FULL_NAME} to {item.CAND_COMM_NAME} ({item.ELECTION_YEAR})
