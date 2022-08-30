@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ReactiveBase, DataSearch, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
+import { ReactiveBase, DataSearch, RangeInput, MultiDropdownList, ReactiveList, ResultList } from "@appbaseio/reactivesearch";
 import { LightDarkToggle } from 'react-light-dark-toggle';
 import { formatAddress } from "localized-address-format";
 import { FaCalendar, FaMap, FaRegStickyNote } from "react-icons/fa";
@@ -53,7 +53,19 @@ function App() {
               title="Filter by Election type"
               aggregationSize={5}
               queryFormat="or"
-              react={{and: ["searchBox"]}}
+              react={{and: ["searchBox", "electionYearFilter"]}}
+            />
+            <br/>
+            <RangeInput
+              title="Election year"
+              componentId="electionYearFilter"
+              dataField="ELECTION_YEAR"
+              react={{and: ["searchBox", "electionTypeFilter"]}}
+              stepValue={1}
+              showHistogram={true}
+              showFilter={true}
+              range={{start: 1999, end: 2022}}
+              defaultValue={{start: 1999, end: 2022}}
             />
           </div>
 
@@ -79,7 +91,7 @@ function App() {
               size={50}
               pagination={true}
               react={{
-                and: ["searchBox", "electionTypeFilter"]
+                and: ["searchBox", "electionTypeFilter", "electionYearFilter"]
               }}
               render={({data}) => (
                 <ReactiveList.ResultListWrapper>
