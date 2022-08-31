@@ -5,6 +5,8 @@ import { DataSearch, RangeInput, MultiDropdownList, ReactiveList, ResultList } f
 
 import { getSearchURL } from './util';
 
+import './Search.css';
+
 function Search() {
   const [searchField, setSearchField] = useState('_FLNG_ENT_FULL_NAME');
 

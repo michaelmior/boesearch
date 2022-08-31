@@ -2,11 +2,6 @@
   padding: 0 2em 2em 2em;
 }
 
-header {
-  margin: 0;
-  padding: 0;
-}
-
 body.dark-mode {
   background-color: #222;
 }
@@ -22,12 +17,4 @@ a {
 
 a.name:hover {
   border-bottom: 1px dashed;
-}
-
-label {
-  padding: 0.5em;
-}
-
-.results h2 {
-  white-space: normal !important;
 }

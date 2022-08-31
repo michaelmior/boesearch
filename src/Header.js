@@ -2,6 +2,8 @@ import React from 'react';
 import { LightDarkToggle } from 'react-light-dark-toggle';
 import useDarkMode from 'use-dark-mode';
 
+import './Header.css';
+
 function Header() {
   const darkMode = useDarkMode();
 
