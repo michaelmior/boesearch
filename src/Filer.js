@@ -44,7 +44,7 @@ function Filer() {
       }}
     />
 
-    <h3>Contributions</h3>
+    <h3 style={{marginBottom: '0em'}}>Contributions</h3>
     <FilerContributions filerID={filerID} />
   </div>;
 }
