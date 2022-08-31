@@ -3,6 +3,7 @@ import { ReactiveBase } from "@appbaseio/reactivesearch";
 import { Navigate, Routes, Route } from "react-router-dom";
 import useDarkMode from 'use-dark-mode';
 
+import Filer from './Filer';
 import Header from './Header';
 import Search from './Search';
 
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate replace to="/search" />} />
           <Route path="search" element={<Search />} />
+          <Route path="filer/:filerID" element={<Filer />} />
         </Routes>
       </div>
     </ReactiveBase>
