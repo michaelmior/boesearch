@@ -7,7 +7,9 @@ import './Header.css';
 function Header() {
   const darkMode = useDarkMode();
 
-  return <header>
+  return <header style={{display: 'block'}}>
+    <h1 style={{textAlign: 'center'}}>NY BOE Contributor Search</h1>
+    <hr style={{width: '100%', borderStyle: 'solid', borderColor: '#EEE'}}/>
     <div style={{ paddingTop: '1.5em', position: 'absolute', top: 0, right: '2em', zIndex: 999 }}>
       <LightDarkToggle
         onToggle={darkMode.toggle}

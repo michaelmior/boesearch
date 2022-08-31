@@ -10,7 +10,7 @@ import './Search.css';
 function Search() {
   const [searchField, setSearchField] = useState('_FLNG_ENT_FULL_NAME');
 
-  return (<>
+  return (<div style={{display: 'flex', justifyContent: 'center', columnGap: '3em', rowGap: '2em', flexFlow: 'wrap'}}>
     <div>
       <div style={{marginBottom: '1em'}}>
         <strong>Search by</strong>
@@ -138,7 +138,7 @@ function Search() {
         )}
       />
     </div>
-  </>);
+  </div>);
 }
 
 export default Search;

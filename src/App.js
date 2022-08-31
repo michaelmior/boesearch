@@ -21,14 +21,7 @@ function App() {
     >
       <div className="App">
         <Header />
-
-        <div style={{display: 'flex', justifyContent: 'center', columnGap: '3em', rowGap: '2em', flexFlow: 'wrap'}}>
-          <h1>NY BOE Contributor Search</h1>
-          <hr style={{width: '100%', borderStyle: 'solid', borderColor: '#EEE'}}/>
-
-          <Search />
-
-        </div>
+        <Search />
       </div>
     </ReactiveBase>
   );
