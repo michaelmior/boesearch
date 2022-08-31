@@ -1,8 +1,8 @@
 import React from 'react';
 import { ReactiveBase } from "@appbaseio/reactivesearch";
-import { LightDarkToggle } from 'react-light-dark-toggle';
 import useDarkMode from 'use-dark-mode';
 
+import Header from './Header';
 import Search from './Search';
 import './App.css';
 
@@ -19,14 +19,7 @@ function App() {
       themePreset={theme}
     >
       <div className="App">
-        <header>
-          <div style={{ paddingTop: '1.5em', position: 'absolute', top: 0, right: '2em', zIndex: 999 }}>
-            <LightDarkToggle
-              onToggle={darkMode.toggle}
-              isLight={!darkMode.value}
-              size='2em' />
-          </div>
-        </header>
+        <Header />
 
         <div style={{display: 'flex', justifyContent: 'center', columnGap: '3em', rowGap: '2em', flexFlow: 'wrap'}}>
           <h1>NY BOE Contributor Search</h1>
