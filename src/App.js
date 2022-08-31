@@ -5,7 +5,7 @@ import { formatAddress } from "localized-address-format";
 import { FaCalendar, FaMap, FaRegStickyNote } from "react-icons/fa";
 import useDarkMode from 'use-dark-mode';
 
-import { getName, getSearchURL } from './util';
+import { getSearchURL } from './util';
 import './App.css';
 
 function App() {
