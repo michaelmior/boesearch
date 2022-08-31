@@ -61,7 +61,7 @@ function FilerData({data}) {
     <iframe
       title="Map"
       height="200"
-      style={{marginTop: '1em', width: '100%'}}
+      style={{marginTop: '1em', width: '100%', background: '#EEE'}}
       loading="lazy"
       allowfullscreen
       referrerpolicy="no-referrer-when-downgrade"
