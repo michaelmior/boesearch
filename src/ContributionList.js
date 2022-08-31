@@ -1,7 +1,9 @@
 import React from 'react';
-import { formatCurrency, formatItemAddress, getNotesElement, getSearchURL } from './util';
-import { FaCalendar, FaMap } from "react-icons/fa";
+import { FaCalendar } from "react-icons/fa";
 import { ReactiveList, ResultList } from "@appbaseio/reactivesearch";
+
+import { formatCurrency, formatItemAddress, getNotesElement, getSearchURL } from './util';
+import AddressBlock from './AddressBlock';
 
 function ContributionList({data, showRecipient}) {
   return <ReactiveList.ResultListWrapper>
@@ -11,21 +13,6 @@ function ContributionList({data, showRecipient}) {
         title += ` to ${item.CAND_COMM_NAME}`;
       }
       title += `(${item.ELECTION_YEAR})`;
-
-      const address = formatItemAddress(item);
-      const addressBlock = (address[0] !== "undefined" && address.join('').trim().length > 0) ?
-        <React.Fragment>
-          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.join(' '))}`} target="_blank" rel="noreferrer">
-            <FaMap style={{float: 'left', marginRight: '1em'}}/>
-          </a>
-          <div style={{float: 'left'}}>
-            {address.filter(line => line.indexOf('undefined') === -1)
-                    .map((line, i) =>
-                      <React.Fragment key={i}>
-                        {line}<br/>
-                      </React.Fragment>)}
-          </div>
-        </React.Fragment> : <></>;
 
       return (<ResultList key={item._id} className="results">
         <ResultList.Content>
@@ -44,7 +31,7 @@ function ContributionList({data, showRecipient}) {
               </a>
             </div>
 
-            {addressBlock}
+            <AddressBlock address={formatItemAddress(item)} />
             {getNotesElement(item)}
           </ResultList.Description>
         </ResultList.Content>
