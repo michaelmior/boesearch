@@ -2,20 +2,20 @@ import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
-import { formatItemAddress } from './util';
+import { formatCurrency, formatItemAddress } from './util';
 import AddressBlock from './AddressBlock';
 
-function FilerData({data}) {
-  const address = formatItemAddress(data, true);
+function FilerData({fields, aggregations}) {
+  const address = formatItemAddress(fields, true);
 
   // Show the filer type (state/county) along with more details if applicable
-  let filerType = data.FILER_TYPE_DESC;
+  let filerType = fields.FILER_TYPE_DESC;
   const details = [];
-  if (data.COUNTY_DESC) {
-    details.push(data.COUNTY_DESC);
+  if (fields.COUNTY_DESC) {
+    details.push(fields.COUNTY_DESC);
   }
-  if (data.MUNICIPALITY_DESC[0]) {
-    const municipalityParts = data.MUNICIPALITY_DESC[0].split(',');
+  if (fields.MUNICIPALITY_DESC[0]) {
+    const municipalityParts = fields.MUNICIPALITY_DESC[0].split(',');
     // If this is the county, we already added it, so skip
     if (municipalityParts[1] !== 'County') {
       // Otherwise, we convert info such as
@@ -34,24 +34,25 @@ function FilerData({data}) {
   // Generate the correct icon based on candidate status
   const statusStyle = {fontSize: '0.75em'};
   let status = <></>;
-  if (data.STATUS[0] === 'ACTIVE') {
+  if (fields.STATUS[0] === 'ACTIVE') {
     status = <FaCheckCircle style={statusStyle} />
-  } else if (data.STATUS[0] === 'TERMINATED') {
+  } else if (fields.STATUS[0] === 'TERMINATED') {
     status = <FaTimesCircle style={statusStyle} />
   }
 
   return <div>
     <h2>
-      <span style={{marginRight: '0.5em'}}>{data.CAND_COMM_NAME}</span>
+      <span style={{marginRight: '0.5em'}}>{fields.CAND_COMM_NAME}</span>
 
       {/* Add an icon with active/terminated status */}
-      <Tippy content={data.STATUS[0][0] + data.STATUS[0].slice(1).toLowerCase()}>
+      <Tippy content={fields.STATUS[0][0] + fields.STATUS[0].slice(1).toLowerCase()}>
         <div style={{display: 'inline'}}>{status}</div>
       </Tippy>
     </h2>
+    <h3>Total Contributions {formatCurrency(aggregations._ORG_AMT_TOTAL.value)}</h3>
 
     {/* Add some additional metadata */}
-    <p>{data.COMMITTEE_TYPE_DESC}</p>
+    <p>{fields.COMMITTEE_TYPE_DESC}</p>
     <p>{filerType}</p>
 
     {/* Show the address text*/}

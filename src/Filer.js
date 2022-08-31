@@ -36,10 +36,15 @@ function Filer() {
           }
         },
 
+        // Get the total amount of contributions
+        aggs: {
+          _ORG_AMT_TOTAL: {sum: {field: "ORG_AMT"}}
+        },
+
         // Since we just need the filer info (same for all requests), get one
         size: 1
       })}
-      render={({error, loading, data}) => {
+      render={({error, loading, data, aggregations}) => {
         if (loading) {
           return <Loader />;
         } else if (error || data.length !== 1) {
@@ -47,7 +52,8 @@ function Filer() {
           return <div>Error</div>;
         } else {
           const fields = data[0].fields;
-          return <FilerData data={fields} />
+          console.log(data);
+          return <FilerData fields={fields} aggregations={aggregations} />
         }
       }}
     />
