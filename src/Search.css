@@ -5,3 +5,7 @@ label {
 .results h2 {
   white-space: normal !important;
 }
+
+.results h2 a:hover {
+  border-bottom: 1px dotted;
+}

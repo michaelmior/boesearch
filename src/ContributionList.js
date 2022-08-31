@@ -8,11 +8,11 @@ import AddressBlock from './AddressBlock';
 function ContributionList({data, showRecipient}) {
   return <ReactiveList.ResultListWrapper>
     {data.map((item) => {
-      let title = `${formatCurrency(item.ORG_AMT)} from ${item._FLNG_ENT_FULL_NAME}`;
+      let title = [`${formatCurrency(item.ORG_AMT)} from ${item._FLNG_ENT_FULL_NAME || 'Unknown'}`];
       if (showRecipient) {
-        title += ` to ${item.CAND_COMM_NAME}`;
+        title.push(<> to <a href={`/filer/${item.FILER_ID}`}>{item.CAND_COMM_NAME}</a></>);
       }
-      title += ` (${item.ELECTION_YEAR})`;
+      title.push(` (${item.ELECTION_YEAR})`);
 
       return (<ResultList key={item._id} className="results">
         <ResultList.Content>
