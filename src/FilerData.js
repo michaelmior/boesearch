@@ -64,8 +64,8 @@ function FilerData({fields, aggregations}) {
       height="200"
       style={{marginTop: '1em', width: '100%', background: '#EEE'}}
       loading="lazy"
-      allowfullscreen
-      referrerpolicy="no-referrer-when-downgrade"
+      allowFullScreen
+      referrerPolicy="no-referrer-when-downgrade"
       src={`https://www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_MAPS_API_KEY}&q=${address.join(' ')}`}>
     </iframe>
   </div>;
