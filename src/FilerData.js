@@ -3,8 +3,14 @@ import AddressBlock from './AddressBlock';
 
 function FilerData({data}) {
   const address = formatItemAddress(data, true);
+  let filerType = data.FILER_TYPE_DESC;
+  if (data.COUNTY_DESC) {
+    filerType += ` (${data.COUNTY_DESC})`;
+  }
   return <div>
     <h2>{data.CAND_COMM_NAME}</h2>
+    <p>{data.COMMITTEE_TYPE_DESC}</p>
+    <p>{filerType}</p>
     <AddressBlock address={address} />
     <iframe
       title="Map"

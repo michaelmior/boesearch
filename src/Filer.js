@@ -14,6 +14,7 @@ function Filer() {
         fields: [
           "CAND_COMM_NAME",
           "FILER_TYPE_DESC",
+          "COMMITTEE_TYPE_DESC",
           "STATUS",
           "COUNTY_DESC",
           "TREASURER_FIRST_NAME",
