@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useQueryParam, withDefault, StringParam } from 'use-query-params';
 import { DataSearch, RangeInput, MultiDropdownList, ReactiveList } from "@appbaseio/reactivesearch";
 
 import ContributionList from './ContributionList';
@@ -6,7 +7,7 @@ import ContributionList from './ContributionList';
 import './Search.css';
 
 function Search() {
-  const [searchField, setSearchField] = useState('_FLNG_ENT_FULL_NAME');
+  const [searchField, setSearchField] = useQueryParam('searchField', withDefault(StringParam, '_FLNG_ENT_FULL_NAME'));
 
   return (<div style={{display: 'flex', justifyContent: 'center', columnGap: '3em', rowGap: '2em', flexFlow: 'wrap'}}>
     <div>
@@ -29,6 +30,7 @@ function Search() {
         title="Election type"
         aggregationSize={5}
         queryFormat="or"
+        URLParams={true}
         react={{and: ["searchBox", "electionYearFilter"]}}
       />
       <br/>
@@ -40,6 +42,7 @@ function Search() {
         stepValue={1}
         showHistogram={true}
         showFilter={true}
+        URLParams={true}
 
         // For some reason DynamicRangeInput isn't working,
         // so for now we just set these values manually
@@ -56,6 +59,7 @@ function Search() {
         ]}
         placeholder='Search'
         queryFormat="and"
+        URLParams={true}
       />
       <br />
       <ReactiveList
