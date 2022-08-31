@@ -3,6 +3,7 @@ import { useQueryParam, withDefault, StringParam } from 'use-query-params';
 import { DataSearch, RangeInput, MultiDropdownList, ReactiveList } from "@appbaseio/reactivesearch";
 
 import ContributionList from './ContributionList';
+import Loader from './Loader';
 
 import './Search.css';
 
@@ -78,9 +79,16 @@ function Search() {
           // here so that the search results will update to match
           and: ["searchBox", "electionTypeFilter", "electionYearFilter"]
         }}
-        render={({data}) => (
-          <ContributionList data={data} showRecipient={true} />
-        )}
+        render={({error, loading, data}) => {
+          if (loading) {
+            return <Loader/>
+          } else if (error) {
+            // TODO: Add a better error message
+            return <div>Error</div>;
+          } else {
+            return <ContributionList data={data} showRecipient={true} />
+          }
+        }}
       />
     </div>
   </div>);

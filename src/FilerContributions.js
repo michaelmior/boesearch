@@ -1,7 +1,7 @@
 import { ReactiveList } from "@appbaseio/reactivesearch";
 
-
 import ContributionList from './ContributionList';
+import Loader from './Loader';
 
 function FilerContributions({filerID}) {
   return <ReactiveList
@@ -22,9 +22,16 @@ function FilerContributions({filerID}) {
         }
       }
     })}
-    render={({data}) => (
-      <ContributionList data={data} showRecipient={false} />
-    )}
+    render={({error, loading, data}) => {
+      if (loading) {
+        return <Loader/>
+      } else if (error) {
+        // TODO: Add a better error message
+        return <div>Error</div>;
+      } else {
+        return <ContributionList data={data} showRecipient={false} />
+      }
+    }}
   />;
 }
 

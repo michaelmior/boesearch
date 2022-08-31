@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import FilerContributions from './FilerContributions';
 import FilerData from './FilerData';
+import Loader from './Loader';
 
 function Filer() {
   let {filerID} = useParams();
@@ -40,8 +41,7 @@ function Filer() {
       })}
       render={({error, loading, data}) => {
         if (loading) {
-          // TODO: Add a nicer loading indicator
-          return <div>Loading</div>;
+          return <Loader />;
         } else if (error || data.length !== 1) {
           // TODO: Add a better error message
           return <div>Error</div>;
