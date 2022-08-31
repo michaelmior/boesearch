@@ -20,7 +20,13 @@ function FilerData({data}) {
     if (municipalityParts[1] !== 'County') {
       // Otherwise, we convert info such as
       // "Rochester,City" to "City of Rochester"
-      details.push(`${municipalityParts[1]} of ${municipalityParts[0]}`);
+      if (municipalityParts[0].indexOf(municipalityParts[1]) !== -1) {
+        // This addresses weird cases such as "Rochester City,City"
+        // so we get "Rochester City" instead of "City of Rochester City"
+        details.push(municipalityParts[0]);
+      } else {
+        details.push(`${municipalityParts[1]} of ${municipalityParts[0]}`);
+      }
     }
   }
   filerType += ` (${details.join(', ')})`;
