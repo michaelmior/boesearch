@@ -1,7 +1,5 @@
-import { ReactiveList, ResultList } from "@appbaseio/reactivesearch";
-import { FaCalendar } from "react-icons/fa";
+import { ReactiveList } from "@appbaseio/reactivesearch";
 
-import { formatCurrency, getNotesElement, getSearchURL } from './util';
 
 import ContributionList from './ContributionList';
 
@@ -15,6 +13,8 @@ function FilerContributions({filerID}) {
     ]}
     size={10}
     pagination={true}
+
+    // Retrieve only contributions to this single filer
     defaultQuery={() => ({
       query: {
         match: {

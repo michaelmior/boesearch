@@ -10,6 +10,8 @@ import Search from './Search';
 import './App.css';
 
 function App() {
+  // Dark mode toggle is inside the header, but
+  // we need the theme here for ReactiveSearch
   const darkMode = useDarkMode();
   const theme = darkMode.value ? 'dark': 'light';
 
@@ -24,7 +26,9 @@ function App() {
       <div className="App">
         <Header />
         <Routes>
+          {/* TODO: Add a proper homepage */}
           <Route path="/" element={<Navigate replace to="/search" />} />
+
           <Route path="search" element={<Search />} />
           <Route path="filer/:filerID" element={<Filer />} />
         </Routes>

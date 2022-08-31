@@ -10,6 +10,7 @@ function Search() {
 
   return (<div style={{display: 'flex', justifyContent: 'center', columnGap: '3em', rowGap: '2em', flexFlow: 'wrap'}}>
     <div>
+      {/* Allow searching by either filer name or candidate name */}
       <div style={{marginBottom: '1em'}}>
         <strong>Search by</strong>
         <label>
@@ -21,6 +22,7 @@ function Search() {
           <span>Candidate name</span>
         </label>
       </div>
+
       <MultiDropdownList
         componentId="electionTypeFilter"
         dataField="ELECTION_TYPE"
@@ -38,6 +40,9 @@ function Search() {
         stepValue={1}
         showHistogram={true}
         showFilter={true}
+
+        // For some reason DynamicRangeInput isn't working,
+        // so for now we just set these values manually
         range={{start: 1999, end: 2022}}
         defaultValue={{start: 1999, end: 2022}}
       />
@@ -65,6 +70,8 @@ function Search() {
         size={50}
         pagination={true}
         react={{
+          // Any other filters which are added must be listed
+          // here so that the search results will update to match
           and: ["searchBox", "electionTypeFilter", "electionYearFilter"]
         }}
         render={({data}) => (
