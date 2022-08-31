@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReactiveBase } from "@appbaseio/reactivesearch";
+import { Navigate, Routes, Route } from "react-router-dom";
 import useDarkMode from 'use-dark-mode';
 
 import Header from './Header';
@@ -21,7 +22,10 @@ function App() {
     >
       <div className="App">
         <Header />
-        <Search />
+        <Routes>
+          <Route path="/" element={<Navigate replace to="/search" />} />
+          <Route path="search" element={<Search />} />
+        </Routes>
       </div>
     </ReactiveBase>
   );
