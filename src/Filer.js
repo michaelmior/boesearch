@@ -17,6 +17,7 @@ function Filer() {
           "COMMITTEE_TYPE_DESC",
           "STATUS",
           "COUNTY_DESC",
+          "MUNICIPALITY_DESC",
           "TREASURER_FIRST_NAME",
           "TREASURER_LAST_NAME",
           "TREASURER_MIDDLE_NAME",

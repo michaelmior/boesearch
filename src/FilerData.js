@@ -8,11 +8,22 @@ import AddressBlock from './AddressBlock';
 function FilerData({data}) {
   const address = formatItemAddress(data, true);
 
-  // Show the filer type (state/county) along with county info if applicable
+  // Show the filer type (state/county) along with more details if applicable
   let filerType = data.FILER_TYPE_DESC;
+  const details = [];
   if (data.COUNTY_DESC) {
-    filerType += ` (${data.COUNTY_DESC})`;
+    details.push(data.COUNTY_DESC);
   }
+  if (data.MUNICIPALITY_DESC[0]) {
+    const municipalityParts = data.MUNICIPALITY_DESC[0].split(',');
+    // If this is the county, we already added it, so skip
+    if (municipalityParts[1] !== 'County') {
+      // Otherwise, we convert info such as
+      // "Rochester,City" to "City of Rochester"
+      details.push(`${municipalityParts[1]} of ${municipalityParts[0]}`);
+    }
+  }
+  filerType += ` (${details.join(', ')})`;
 
   // Generate the correct icon based on candidate status
   const statusStyle = {fontSize: '0.75em'};
