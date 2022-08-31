@@ -12,7 +12,7 @@ function ContributionList({data, showRecipient}) {
       if (showRecipient) {
         title += ` to ${item.CAND_COMM_NAME}`;
       }
-      title += `(${item.ELECTION_YEAR})`;
+      title += ` (${item.ELECTION_YEAR})`;
 
       return (<ResultList key={item._id} className="results">
         <ResultList.Content>
