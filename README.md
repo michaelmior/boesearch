@@ -1,4 +1,5 @@
 # New York State Board of Elections data search
+[![CI](https://github.com/michaelmior/boesearch/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelmior/boesearch/actions/workflows/ci.yml)
 
 ## Setting environment variables
 
