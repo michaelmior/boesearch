@@ -1,10 +1,10 @@
-import { formatAddress } from "localized-address-format";
+import {formatAddress} from 'localized-address-format';
 
 // Build a currency formatter to use in `formatCurrency` below
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
-  minimumFractionDigits: 2
+  minimumFractionDigits: 2,
 });
 
 export const formatCurrency = formatter.format;
@@ -20,7 +20,11 @@ export const formatItemAddress = (item, candidate) => {
     locality: candidate ? item.CITY : item.FLNG_ENT_CITY,
     administrativeArea: candidate ? item.STATE : item.FLNG_ENT_STATE,
     postalCode: candidate ? item.ZIPCODE : item.FLNG_ENT_ZIP,
-    postalCountry: candidate ? 'US' : (item.FLNG_ENT_COUNTRY === 'United States' ? 'US': undefined)
+    postalCountry: candidate
+      ? 'US'
+      : item.FLNG_ENT_COUNTRY === 'United States'
+      ? 'US'
+      : undefined,
   });
 };
 

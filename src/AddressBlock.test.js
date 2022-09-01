@@ -7,7 +7,10 @@ test('displays an empty fragment with no address', async () => {
   expect(screen.queryByRole('a')).not.toBeInTheDocument();
 });
 
-test('includes a link to Google Maps', async() => {
+test('includes a link to Google Maps', async () => {
   render(<AddressBlock address={['123 Anywhere Lane']} />);
-  expect(screen.getByRole('link')).toHaveAttribute('href', expect.stringMatching(/^https:\/\/www.google.com\/maps\//));
+  expect(screen.getByRole('link')).toHaveAttribute(
+    'href',
+    expect.stringMatching(/^https:\/\/www.google.com\/maps\//)
+  );
 });

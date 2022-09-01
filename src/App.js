@@ -1,6 +1,6 @@
 import React from 'react';
-import { ReactiveBase } from "@appbaseio/reactivesearch";
-import { Navigate, Routes, Route } from "react-router-dom";
+import {ReactiveBase} from '@appbaseio/reactivesearch';
+import {Navigate, Routes, Route} from 'react-router-dom';
 import useDarkMode from 'use-dark-mode';
 
 import Filer from './Filer';
@@ -13,7 +13,7 @@ function App() {
   // Dark mode toggle is inside the header, but
   // we need the theme here for ReactiveSearch
   const darkMode = useDarkMode();
-  const theme = darkMode.value ? 'dark': 'light';
+  const theme = darkMode.value ? 'dark' : 'light';
 
   return (
     <ReactiveBase

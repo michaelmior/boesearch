@@ -1,8 +1,8 @@
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import {FaCheckCircle, FaTimesCircle} from 'react-icons/fa';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
-import { formatCurrency, formatItemAddress } from './util';
+import {formatCurrency, formatItemAddress} from './util';
 import AddressBlock from './AddressBlock';
 
 function FilerData({fields, aggregations}) {
@@ -35,40 +35,50 @@ function FilerData({fields, aggregations}) {
   const statusStyle = {fontSize: '0.75em'};
   let status = <></>;
   if (fields.STATUS[0] === 'ACTIVE') {
-    status = <FaCheckCircle style={statusStyle} />
+    status = <FaCheckCircle style={statusStyle} />;
   } else if (fields.STATUS[0] === 'TERMINATED') {
-    status = <FaTimesCircle style={statusStyle} />
+    status = <FaTimesCircle style={statusStyle} />;
   }
 
-  return <div>
-    <h2>
-      <span style={{marginRight: '0.5em'}}>{fields.CAND_COMM_NAME}</span>
+  return (
+    <div>
+      <h2>
+        <span style={{marginRight: '0.5em'}}>{fields.CAND_COMM_NAME}</span>
 
-      {/* Add an icon with active/terminated status */}
-      <Tippy content={fields.STATUS[0][0] + fields.STATUS[0].slice(1).toLowerCase()}>
-        <div style={{display: 'inline'}}>{status}</div>
-      </Tippy>
-    </h2>
-    <h3>Total Contributions {formatCurrency(aggregations._ORG_AMT_TOTAL.value)}</h3>
+        {/* Add an icon with active/terminated status */}
+        <Tippy
+          content={
+            fields.STATUS[0][0] + fields.STATUS[0].slice(1).toLowerCase()
+          }
+        >
+          <div style={{display: 'inline'}}>{status}</div>
+        </Tippy>
+      </h2>
+      <h3>
+        Total Contributions {formatCurrency(aggregations._ORG_AMT_TOTAL.value)}
+      </h3>
 
-    {/* Add some additional metadata */}
-    <p>{fields.COMMITTEE_TYPE_DESC}</p>
-    <p>{filerType}</p>
+      {/* Add some additional metadata */}
+      <p>{fields.COMMITTEE_TYPE_DESC}</p>
+      <p>{filerType}</p>
 
-    {/* Show the address text*/}
-    <AddressBlock address={address} />
+      {/* Show the address text*/}
+      <AddressBlock address={address} />
 
-    {/* Embed a Google Maps instance with the location */}
-    <iframe
-      title="Map"
-      height="200"
-      style={{marginTop: '1em', width: '100%', background: '#EEE'}}
-      loading="lazy"
-      allowFullScreen
-      referrerPolicy="no-referrer-when-downgrade"
-      src={`https://www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_MAPS_API_KEY}&q=${address.join(' ')}`}>
-    </iframe>
-  </div>;
+      {/* Embed a Google Maps instance with the location */}
+      <iframe
+        title="Map"
+        height="200"
+        style={{marginTop: '1em', width: '100%', background: '#EEE'}}
+        loading="lazy"
+        allowFullScreen
+        referrerPolicy="no-referrer-when-downgrade"
+        src={`https://www.google.com/maps/embed/v1/place?key=${
+          process.env.REACT_APP_MAPS_API_KEY
+        }&q=${address.join(' ')}`}
+      ></iframe>
+    </div>
+  );
 }
 
 export default FilerData;
