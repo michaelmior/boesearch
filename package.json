@@ -27,7 +27,7 @@
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "lint": "eslint . && prettier --check src/**/*.js && npmPkgJsonLint -q . && markdownlint *.md",
+    "lint": "eslint . && prettier --check src/**/*.{js,css} && npmPkgJsonLint -q . && markdownlint *.md",
     "prepare": "husky install",
     "start": "react-scripts start",
     "test": "react-scripts test"
