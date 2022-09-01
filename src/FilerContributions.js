@@ -7,6 +7,7 @@ function FilerContributions({filerID}) {
   return (
     <ReactiveList
       componentId="filerContributions"
+      dataField="ORG_AMT"
       sortOptions={[
         {label: 'Amount', dataField: 'ORG_AMT', sortBy: 'desc'},
         {label: 'Donation date', dataField: 'SCHED_DATE', sortBy: 'desc'},
