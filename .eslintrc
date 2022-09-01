@@ -1,0 +1,10 @@
+{
+  "extends": "react-app",
+  "overrides" : [
+    {
+      "files": ["*.yaml", "*.yml"],
+      "plugins": ["yaml"],
+      "extends": ["plugin:yaml/recommended"]
+    }
+  ]
+}
