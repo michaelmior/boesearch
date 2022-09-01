@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { ReactiveComponent } from "@appbaseio/reactivesearch";
 import { useParams } from "react-router-dom";
 
@@ -6,7 +7,8 @@ import FilerData from './FilerData';
 import Loader from './Loader';
 
 function Filer() {
-  let {filerID} = useParams();
+  const {filerID} = useParams();
+  let [showContributions, setShowContributions] = useState(false);
 
   return <div style={{maxWidth: '800px', margin: '0 auto'}}>
     <ReactiveComponent
@@ -51,15 +53,19 @@ function Filer() {
           // TODO: Add a better error message
           return <div>Error</div>;
         } else {
+          // Now that the main data was loaded, show contributions
+          setShowContributions(true);
+
           const fields = data[0].fields;
-          console.log(data);
           return <FilerData fields={fields} aggregations={aggregations} />
         }
       }}
     />
 
-    <h3 style={{marginBottom: '0em'}}>Contributions</h3>
-    <FilerContributions filerID={filerID} />
+    <div style={{display: showContributions ? 'block' : 'none'}}>
+      <h3 style={{marginBottom: '0em'}}>Contributions</h3>
+      <FilerContributions filerID={filerID} />
+    </div>
   </div>;
 }
 
