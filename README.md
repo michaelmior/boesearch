@@ -1,4 +1,5 @@
 # New York State Board of Elections data search
+
 [![CI](https://github.com/michaelmior/boesearch/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelmior/boesearch/actions/workflows/ci.yml)
 
 ## Setting environment variables
@@ -37,7 +38,7 @@ Before importing the data, these headers must be added to the beginning of each 
 
 To add the headers, concatenate the data files:
 
-```
+```shell
 cat candidate-headers.txt COMMCAND.CSV > COMMCAND-headers.csv
 cat filer-headers.txt STATE_CANDIDATE.csv STATE_COMMITTEE.csv COUNTY_CANDIDATE.csv COUNTY_COMMITTEE.csv > ALL-headers.csv
 ```
@@ -45,13 +46,13 @@ cat filer-headers.txt STATE_CANDIDATE.csv STATE_COMMITTEE.csv COUNTY_CANDIDATE.c
 Finally, we need join the candidate data with the filing information.
 The easiest way to do so is using [xsv](https://github.com/BurntSushi/xsv).
 
-```
+```shell
 xsv join FILER_ID ALL-headers.csv FILER_ID COMMCAND-headers.CSV > ALL-joined.csv
 ```
 
 This joined data file can then be imported into Elasticsearch by first installing the node.js dependencies, and then running the included import script.
 
-```
+```shell
 yarn install
 node import.js --create-index ALL-joined.csv
 ```
