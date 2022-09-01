@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "author": "Michael Mior <mmior@mail.rit.edu>",
   "bugs": "https://github.com/michaelmior/boesearch/issues",
-  "homepage": "https://github.com/michaelmior/boesearch",
   "private": true,
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.38.3",

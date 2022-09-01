@@ -10,7 +10,6 @@
     "prefer-no-engineStrict": "error",
     "require-author": "error",
     "require-bugs": "error",
-    "require-homepage": "error",
     "require-scripts": "error"
   }
 }
