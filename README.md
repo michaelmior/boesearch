@@ -19,6 +19,7 @@ Run `docker compose up` and all the necessary containers for Elasticsearch shoul
 
 If you are using a separate Elasticsearch instance (for example, for a production deployment), you will need to set `ELASTIC_PASSWORD` in the `.env` file to the password of the `elastic` user.
 Furthermore, you will need to create a read-only user that the frontend can use and set `REACT_APP_ES_USER` and `REACT_APP_ES_PASSWORD` appropriately.
+Do *not* use the same development passwords located in [`.devcontainer/env`](.devcontainer/env).
 
 ## Gathering data
 

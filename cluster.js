@@ -123,8 +123,8 @@ async function run () {
       password: process.env.ELASTIC_PASSWORD
     },
     tls: {
-      ca: fs.readFileSync('./ca.crt'),
-      rejectUnauthorized: false
+      ca: process.env.ES_CERT_PATH ? fs.readFileSync(process.env.ES_CERT_PATH) : undefined,
+      rejectUnauthorized: !process.env.ES_ALLOW_UNAUTHORIZED || process.env.ES_ALLOW_UNAUTHORIZED !== 'true'
     }
   });
 

@@ -1,8 +1,8 @@
 # Password for the 'elastic' user (at least 6 characters)
-ELASTIC_PASSWORD=XXX
+ELASTIC_PASSWORD=56Gx%9A2yhOW
 
 # Password for the 'kibana_system' user (at least 6 characters)
-KIBANA_PASSWORD=XXX
+KIBANA_PASSWORD=t6k9Ts&mg6p9
 
 # Version of Elastic products
 STACK_VERSION=8.3.3
@@ -19,19 +19,12 @@ ES_PORT=9200
 # Port to expose Kibana to the host
 KIBANA_PORT=5601
 
-REACT_APP_ES_URL=https://localhost:9200
+REACT_APP_ES_URL=https://${CODESPACE_NAME}-9200.githubpreview.dev
 
 REACT_APP_ES_INDEX=boesearch
 
 REACT_APP_ES_USER=frontend
 
-REACT_APP_ES_PASSWORD=XXX
+REACT_APP_ES_PASSWORD=l1E69&80WmRR
 
-REACT_APP_MAPS_API_KEY=XXX
-
-# Path to the generated Elasticsearch certificate
-# See here for retrieving from Docker: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
-ES_CERT_PATH=./ca.crt
-
-# Set to true to enable unauthorized certificates
-ES_ALLOW_UNAUTHORIZED=false
+ES_ALLOW_UNAUTHORIZED=true

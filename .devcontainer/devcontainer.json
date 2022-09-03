@@ -1,0 +1,35 @@
+{
+  "name": "Node.js and Elasticsearch",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.yml"
+  ],
+	"service": "app",
+  "runServices": ["app", "elasticsearch"],
+  "initializeCommand": "cp .devcontainer/env .env",
+  "postAttachCommand": "gh codespace ports visibility 9200:public -c $CODESPACE_NAME",
+  "updateContentCommand": "yarn install && node generate.js > SAMPLE.csv && node import.js --delete-index --create-index SAMPLE.csv",
+  "forwardPorts": [3000, 9200],
+  "portsAttributes": {
+    "9200": {
+      "protocol": "https",
+      "requireLocalPort": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "settings": {
+    "extensions.ignoreRecommendations": true,
+    "redhat.telemetry.enabled": false
+  }
+}
