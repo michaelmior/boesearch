@@ -44,7 +44,7 @@ function ContributionList({data, showRecipient}) {
         title.push(` (${item.ELECTION_YEAR})`);
 
         return (
-          <ResultList key={item._id} className="results">
+          <ResultList key={item._id} className="results" as="div">
             <ResultList.Content>
               <ResultList.Title>{title}</ResultList.Title>
 
