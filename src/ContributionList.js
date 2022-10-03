@@ -33,7 +33,8 @@ function ContributionList({data, showRecipient}) {
       {data.map((item) => {
         // Show direction of contribution/expense
         const incoming = '_IN_AMT' in item;
-        const dir = incoming ? 'from' : 'to';
+        const dir1 = incoming ? 'from' : 'to';
+        const dir2 = incoming ? 'to' : 'from';
         const icon = incoming ? (
           <FaArrowAltCircleLeft style={{marginRight: '1em'}} />
         ) : (
@@ -44,7 +45,7 @@ function ContributionList({data, showRecipient}) {
         // (useful for detail pages when all donations have the same recipient)
         let title = [
           icon,
-          `${formatCurrency(item.ORG_AMT)} ${dir} ${
+          `${formatCurrency(item.ORG_AMT)} ${dir1} ${
             item._FLNG_ENT_FULL_NAME || 'Unknown'
           }`,
         ];
@@ -52,7 +53,8 @@ function ContributionList({data, showRecipient}) {
           title.push(
             <>
               {' '}
-              to <a href={`/filer/${item.FILER_ID}`}>{item.CAND_COMM_NAME}</a>
+              {dir2}{' '}
+              <a href={`/filer/${item.FILER_ID}`}>{item.CAND_COMM_NAME}</a>
             </>
           );
         }
