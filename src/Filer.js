@@ -41,7 +41,8 @@ function Filer() {
 
           // Get the total amount of contributions
           aggs: {
-            _ORG_AMT_TOTAL: {sum: {field: 'ORG_AMT'}},
+            _IN_AMT_TOTAL: {sum: {field: '_IN_AMT'}},
+            _OUT_AMT_TOTAL: {sum: {field: '_OUT_AMT'}},
           },
 
           // Since we just need the filer info (same for all requests), get one

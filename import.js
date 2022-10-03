@@ -80,6 +80,67 @@ const TYPE_MAPPINGS = {
   // Computed fields
   _FLNG_ENT_FULL_NAME: 'text',
   _TREASURER_FULL_NAME: 'text',
+  _IN_AMT: 'float',
+  _OUT_AMT: 'float',
+}
+
+// This indicates whether money is going in or out of a campaign
+// +1 is for incoming, -1 is for outgoing
+// This will be later multiplied by ORG_AMT
+const CONTRIBUTION_DIRECTION = {
+  // Monetary Contributions Received From Ind. & Part.
+  'A': +1,
+
+  // Monetary Contributions Received From Corporation
+  'B': +1,
+
+  // Monetary Contributions Received From All Other
+  'C': +1,
+
+  // In-Kind (Non-Monetary) Contributions Received
+  'D': +1,
+
+  // Other Receipts Received
+  'E': +1,
+
+  // Expenditures/ Payments
+  'F': -1,
+
+  // Transfers In
+  'G': +1,
+
+  // Transfers Out
+  'H': -1,
+
+  // Loans Received
+  'I': +1,
+
+  // Loan Repayments
+  'J': -1,
+
+  // Liabilities/Loans Forgiven
+  'K': -1,
+
+  // Expenditure Refunds (Increases Balance)
+  'L': +1,
+
+  // Contributions Refunded (Decreases Balance)
+  'M': -1,
+
+  // Outstanding Liabilities/Loans
+  'N': -1,
+
+  // LLCs/Partnership/Subcontractor
+  'O': -1,
+
+  // Non-Campaign Housekeeping Receipts
+  'P': +1,
+
+  // Non-Campaign Housekeeping Expenses
+  'Q': -1,
+
+  // Expense Allocation Among Candidates
+  'R': -1,
 }
 
 const CONVERTERS = {
@@ -226,6 +287,22 @@ async function run () {
           newRecord[key] = newValue;
         }
       }
+
+      // For each amount, determine whether it is incoming or outgoing
+      // and store a copy of the value with the appropriate sign
+      //
+      // XXX I'm not sure what OWED_AMT is, but we almost certainly need to
+      //     consider both OWED_AMT and ORG_AMT when analyzing this data
+      const origAmt = newRecord['ORG_AMT'];
+      if (typeof origAmt === 'number' && !Number.isNaN(origAmt)) {
+        const dir = CONTRIBUTION_DIRECTION[newRecord['FILING_SCHED_ABBREV']];
+        if (dir > 0) {
+          newRecord['_IN_AMT'] = origAmt;
+        } else {
+          newRecord['_OUT_AMT'] = origAmt;
+        }
+      }
+
       return newRecord;
     },
     columns: true

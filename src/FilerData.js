@@ -55,7 +55,10 @@ function FilerData({fields, aggregations}) {
         </Tippy>
       </h2>
       <h3>
-        Total Contributions {formatCurrency(aggregations._ORG_AMT_TOTAL.value)}
+        Total Contributions {formatCurrency(aggregations._IN_AMT_TOTAL.value)}
+      </h3>
+      <h3>
+        Total Expenditures {formatCurrency(aggregations._OUT_AMT_TOTAL.value)}
       </h3>
 
       {/* Add some additional metadata */}

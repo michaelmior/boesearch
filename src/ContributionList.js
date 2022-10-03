@@ -1,5 +1,10 @@
 import React from 'react';
-import {FaCalendar, FaRegStickyNote} from 'react-icons/fa';
+import {
+  FaArrowAltCircleRight,
+  FaArrowAltCircleLeft,
+  FaCalendar,
+  FaRegStickyNote,
+} from 'react-icons/fa';
 import {ReactiveList, ResultList} from '@appbaseio/reactivesearch';
 
 import {formatCurrency, formatItemAddress, getSearchURL} from './util';
@@ -26,10 +31,20 @@ function ContributionList({data, showRecipient}) {
   return (
     <ReactiveList.ResultListWrapper>
       {data.map((item) => {
+        // Show direction of contribution/expense
+        const incoming = '_IN_AMT' in item;
+        const dir = incoming ? 'from' : 'to';
+        const icon = incoming ? (
+          <FaArrowAltCircleLeft style={{marginRight: '1em'}} />
+        ) : (
+          <FaArrowAltCircleRight style={{marginRight: '1em'}} />
+        );
+
         // Generate a title for each result, which may not include the recipient
         // (useful for detail pages when all donations have the same recipient)
         let title = [
-          `${formatCurrency(item.ORG_AMT)} from ${
+          icon,
+          `${formatCurrency(item.ORG_AMT)} ${dir} ${
             item._FLNG_ENT_FULL_NAME || 'Unknown'
           }`,
         ];
