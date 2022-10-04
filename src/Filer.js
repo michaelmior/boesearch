@@ -65,7 +65,7 @@ function Filer() {
       />
 
       <div style={{display: showContributions ? 'block' : 'none'}}>
-        <h3 style={{marginBottom: '0em'}}>Contributions</h3>
+        <h3 style={{marginBottom: '0em'}}>Contributions and Expenses</h3>
         <FilerContributions filerID={filerID} />
       </div>
     </div>
