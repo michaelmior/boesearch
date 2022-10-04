@@ -66,6 +66,9 @@ function ContributionList({data, showRecipient}) {
               <ResultList.Title>{title}</ResultList.Title>
 
               <ResultList.Description>
+                <div style={{paddingBottom: '1em', marginLeft: '2em'}}>
+                  {item.FILING_SCHED_DESC}
+                </div>
                 <div style={{paddingBottom: '1em'}}>
                   <FaCalendar style={{float: 'left', marginRight: '1em'}} />
                   {new Date(item.SCHED_DATE).toLocaleDateString('en-us')}
