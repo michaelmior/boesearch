@@ -10,7 +10,7 @@ import {ReactiveList, ResultList} from '@appbaseio/reactivesearch';
 import {formatCurrency, formatItemAddress, getSearchURL} from './util';
 import AddressBlock from './AddressBlock';
 
-function ContributionList({data, showRecipient}) {
+function FilingList({data, showRecipient}) {
   // Generate paragraphs that include the two possible notes values
   const notesText = [data.PURPOSE_CODE_DESC, data.TRANS_EXPLNTN]
     .map((s) => (s || '').trim())
@@ -96,4 +96,4 @@ function ContributionList({data, showRecipient}) {
   );
 }
 
-export default ContributionList;
+export default FilingList;

@@ -1,12 +1,12 @@
 import {ReactiveList} from '@appbaseio/reactivesearch';
 
-import ContributionList from './ContributionList';
+import FilingList from './FilingList';
 import Loader from './Loader';
 
-function FilerContributions({filerID}) {
+function FilerFilings({filerID}) {
   return (
     <ReactiveList
-      componentId="filerContributions"
+      componentId="filerFilings"
       dataField="ORG_AMT"
       sortOptions={[
         {label: 'Amount', dataField: 'ORG_AMT', sortBy: 'desc'},
@@ -30,11 +30,11 @@ function FilerContributions({filerID}) {
           // TODO: Add a better error message
           return <div>Error</div>;
         } else {
-          return <ContributionList data={data} showRecipient={false} />;
+          return <FilingList data={data} showRecipient={false} />;
         }
       }}
     />
   );
 }
 
-export default FilerContributions;
+export default FilerFilings;

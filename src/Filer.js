@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {ReactiveComponent} from '@appbaseio/reactivesearch';
 import {useParams} from 'react-router-dom';
 
-import FilerContributions from './FilerContributions';
+import FilerFilings from './FilerFilings';
 import FilerData from './FilerData';
 import Loader from './Loader';
 
 function Filer() {
   const {filerID} = useParams();
-  let [showContributions, setShowContributions] = useState(false);
+  let [showFilings, setShowFilings] = useState(false);
 
   return (
     <div style={{maxWidth: '800px', margin: '0 auto'}}>
@@ -32,7 +32,7 @@ function Filer() {
           ],
           _source: false,
 
-          // Contributions are only for this single filer
+          // Filings are only for this single filer
           query: {
             match: {
               FILER_ID: filerID,
@@ -56,7 +56,7 @@ function Filer() {
             return <div>Error</div>;
           } else {
             // Now that the main data was loaded, show contributions
-            setShowContributions(true);
+            setShowFilings(true);
 
             const fields = data[0].fields;
             return <FilerData fields={fields} aggregations={aggregations} />;
@@ -64,9 +64,9 @@ function Filer() {
         }}
       />
 
-      <div style={{display: showContributions ? 'block' : 'none'}}>
+      <div style={{display: showFilings ? 'block' : 'none'}}>
         <h3 style={{marginBottom: '0em'}}>Contributions and Expenses</h3>
-        <FilerContributions filerID={filerID} />
+        <FilerFilings filerID={filerID} />
       </div>
     </div>
   );

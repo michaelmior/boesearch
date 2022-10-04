@@ -7,7 +7,7 @@ import {
   ReactiveList,
 } from '@appbaseio/reactivesearch';
 
-import ContributionList from './ContributionList';
+import FilingList from './FilingList';
 import Loader from './Loader';
 
 import './Search.css';
@@ -115,7 +115,7 @@ function Search() {
               // TODO: Add a better error message
               return <div>Error</div>;
             } else {
-              return <ContributionList data={data} showRecipient={true} />;
+              return <FilingList data={data} showRecipient={true} />;
             }
           }}
         />
